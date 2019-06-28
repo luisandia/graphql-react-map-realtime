@@ -26,11 +26,6 @@ module.exports = gql`
         author:User
     }
 
-    type Comment{
-        text:String
-        createAt:String
-    }
-
     type Query{
         me: User
     }

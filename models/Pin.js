@@ -1,5 +1,5 @@
-const { mongoose } = require('mongoose');
 
+const  mongoose = require('mongoose');
 
 const PinSchema = new mongoose.Schema({
     title: String,
