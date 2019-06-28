@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import ReactMapGL, { NavigationControl } from 'react-map-gl';
+import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
 // import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
 // import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
+
+import PinIcon from './PinIcon';
 
 const INITIAL_VIEWPORT = {
   latitude: 37.7577,
@@ -11,8 +13,31 @@ const INITIAL_VIEWPORT = {
   zoom: 13
 }
 
+
+
+
 const Map = ({ classes }) => {
   const [viewport, setViewport] = useState(INITIAL_VIEWPORT);
+
+  const [userPosition, setUserPosition] = useState(null);
+  useEffect(() => {
+    getUserPosition()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const getUserPosition = () => {
+
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(position => {
+        console.log(position);
+        debugger;
+        const { latitude, longitude } = position.coords;
+        setViewport({ ...viewport, latitude, longitude });
+        setUserPosition({ latitude, longitude })
+      },
+        err => { console.error(err); })
+    }
+  }
+
   return (
     <div className={classes.root}>
       <ReactMapGL
@@ -20,14 +45,33 @@ const Map = ({ classes }) => {
         height="calc(100vh - 64px)"
         mapStyle="mapbox://styles/mapbox/streets-v9"
         mapboxApiAccessToken="pk.eyJ1IjoiemFmaXJvbiIsImEiOiJjamRucDhoMjIwY2ZxMzJwa2h3cHhjZThzIn0.vVfzUwdgws2aEVWDhOEoMg"
-        onViewStateChange={newViewport => (newViewport)}
+        onViewStateChange={newViewport => setViewport(newViewport)}
         {...viewport}
       >
         {/* navigation control */}
         <div className={classes.navigationControl}>
-        <NavigationControl
-        onViewStateChange={newViewport => (newViewport)}        />
+          <NavigationControl
+            onViewStateChange={newViewport => setViewport(newViewport)}
+          />
         </div>
+
+        {
+          console.log(userPosition)
+        }
+
+        {/* Pin current position */}
+        {
+          userPosition &&
+          <Marker
+            latitude={userPosition.latitude}
+            longitude={userPosition.longitude}
+            offsetLeft={-19}
+            offsetTop={-37}
+          >
+            <PinIcon size={40} color="red" />
+
+          </Marker>
+        }
       </ReactMapGL>
     </div>);
 };
