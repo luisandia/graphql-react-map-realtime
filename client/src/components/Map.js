@@ -33,7 +33,6 @@ const Map = ({ classes }) => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(position => {
         console.log(position);
-        debugger;
         const { latitude, longitude } = position.coords;
         setViewport({ ...viewport, latitude, longitude });
         setUserPosition({ latitude, longitude })
@@ -72,11 +71,6 @@ const Map = ({ classes }) => {
             onViewStateChange={newViewport => setViewport(newViewport)}
           />
         </div>
-
-        {
-          console.log(userPosition)
-        }
-
         {/* Pin current position */}
         {
           userPosition &&
