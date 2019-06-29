@@ -1,5 +1,6 @@
 const { AuthenticationError } = require('apollo-server');
 const Pin = require('./models/Pin')
+const User = require('./models/User')
 
 const authenticated = next => (root, args, ctx, info) => {
     if (!ctx.currentUser) {
@@ -14,6 +15,11 @@ module.exports = {
         getPins: async (root, args, ctx) => {
             const pins = await Pin.find({}).populate('author').populate('comments.author');
             return pins;
+        },
+        users:async(root,args,ctx)=>{
+            const users = await User.find({})
+            return users;
+
         }
     },
     Mutation: {
