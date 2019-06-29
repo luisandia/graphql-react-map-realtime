@@ -1,7 +1,7 @@
 import { GraphQLClient } from 'graphql-request';
 import { useState, useEffect } from 'react'
 
-export const BASE_URL = process.env.NODE_ENV === "production" ? "<insert-production-url>" : "http://localhost:4000/graphql"
+export const BASE_URL = process.env.NODE_ENV === "production" ? "<insert-production-url>" : `http://${process.env.REACT_APP_GRAPHQL_URL}`
 
 console.log(BASE_URL)
 export const useClient = () => {

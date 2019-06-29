@@ -15,8 +15,10 @@ import { ApolloClient } from 'apollo-client';
 import { WebSocketLink } from 'apollo-link-ws';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
+console.log(process.env)
+
 const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:4000/graphql',
+  uri: `ws://${process.env.REACT_APP_GRAPHQL_URL}`,
   options: {
     reconnect: true
   }
