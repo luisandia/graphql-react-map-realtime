@@ -40,8 +40,8 @@ module.exports = gql`
         users:[User!]
     }
 
-
     type Mutation{
         createPin(input:CreatePinInput!):Pin
+        deletePin(pinId:ID!):Pin
     }
 `;

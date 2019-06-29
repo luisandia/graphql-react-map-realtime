@@ -16,7 +16,7 @@ module.exports = {
             const pins = await Pin.find({}).populate('author').populate('comments.author');
             return pins;
         },
-        users:async(root,args,ctx)=>{
+        users: async (root, args, ctx) => {
             const users = await User.find({})
             return users;
 
@@ -30,6 +30,13 @@ module.exports = {
             }).save();
             const pinAdded = await Pin.populate(newPin, 'author')
             return pinAdded;
-        }
+        },
+        deletePin: authenticated(async (root, args, ctx) => {
+            console.log(args)
+            const { pinId } = args
+            const pinDeleted = await Pin.findOneAndDelete({ _id: pinId }).exec()
+            console.log(pinDeleted)
+            return pinDeleted;
+        })
     }
 }
