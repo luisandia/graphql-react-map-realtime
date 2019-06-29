@@ -9,7 +9,7 @@ export const CREATE_PIN_MUTATION = `
             longitude:$longitude
         }){
             _id
-            createAt
+            createdAt
             title
             image
             content

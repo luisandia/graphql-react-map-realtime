@@ -8,6 +8,8 @@ import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
 import PinIcon from './PinIcon';
 import Context from '../context';
 import Blog from './Blog';
+import { useClient } from '../client';
+import { GET_PINS_QUERY } from '../graphql/queries';
 
 
 const INITIAL_VIEWPORT = {
@@ -20,12 +22,17 @@ const INITIAL_VIEWPORT = {
 
 
 const Map = ({ classes }) => {
+  const client = useClient();
   const { state, dispatch } = useContext(Context);
   const [viewport, setViewport] = useState(INITIAL_VIEWPORT);
 
   const [userPosition, setUserPosition] = useState(null);
   useEffect(() => {
     getUserPosition()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    getPins()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const getUserPosition = () => {
@@ -39,6 +46,11 @@ const Map = ({ classes }) => {
       },
         err => { console.error(err); })
     }
+  }
+
+  const getPins = async () => {
+    const { getPins } = await client.request(GET_PINS_QUERY);
+    dispatch({ type: "GET_PINS", payload: getPins });
   }
 
   const handleMapClick = ({ lngLat, leftButton }) => {
@@ -99,6 +111,21 @@ const Map = ({ classes }) => {
             </Marker>
           )
         }
+
+        {/* pin list */}
+        {state.pins.map(pin => (
+          <Marker
+            key={pin._id}
+            latitude={pin.latitude}
+            longitude={pin.longitude}
+            offsetLeft={-19}
+            offsetTop={-37}
+          >
+            <PinIcon size={40} color="darkblue" />
+
+          </Marker>
+        ))}
+
       </ReactMapGL>
 
       {/* Blog area to add pin content */}
