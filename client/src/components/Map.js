@@ -10,7 +10,7 @@ import Context from '../context';
 import Blog from './Blog';
 import { useClient } from '../client';
 import { GET_PINS_QUERY } from '../graphql/queries';
-
+import differenceInMinutes from 'date-fns/difference_in_minutes'
 
 const INITIAL_VIEWPORT = {
   latitude: 37.7577,
@@ -63,6 +63,11 @@ const Map = ({ classes }) => {
     const [longitude, latitude] = lngLat;
     dispatch({ type: "UPDATE_DRAFT_LOCATION", payload: { longitude, latitude } })
 
+  }
+
+  const highlightNewPin = (pin) => {
+    const isNewPin = differenceInMinutes(Date.now(), Number(pin.createdAt)) <= 30;
+    return isNewPin ? "limegreen" : "darkblue"
   }
 
   return (
@@ -121,7 +126,7 @@ const Map = ({ classes }) => {
             offsetLeft={-19}
             offsetTop={-37}
           >
-            <PinIcon size={40} color="darkblue" />
+            <PinIcon size={40} color={highlightNewPin(pin)} />
 
           </Marker>
         ))}
