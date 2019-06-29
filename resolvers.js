@@ -1,11 +1,5 @@
 const { AuthenticationError } = require('apollo-server');
-
-const user = {
-    _id: "1",
-    name: "Luis",
-    email: "luis@gmail.com",
-    picture: "https://d2h1pu99sxkfvn.cloudfront.net/b0/10964942/454135003_CPbnMylD9z/P6.jpg"
-}
+const Pin = require('./models/Pin')
 
 const authenticated = next => (root, args, ctx, info) => {
     if (!ctx.currentUser) {
@@ -17,5 +11,15 @@ const authenticated = next => (root, args, ctx, info) => {
 module.exports = {
     Query: {
         me: authenticated((root, args, ctx, info) => ctx.currentUser)
+    },
+    Mutation: {
+        createPin: async (root, args, ctx) => {
+            const newPin = await new Pin({
+                ...args.input,
+                author: ctx.currentUser._id
+            }).save();
+            const pinAdded = await Pin.populate(newPin, 'author')
+            return pinAdded;
+        }
     }
 }

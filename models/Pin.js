@@ -1,19 +1,20 @@
 
-const  mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 const PinSchema = new mongoose.Schema({
     title: String,
     content: String,
     image: String,
     latitude: Number,
-    longiture: Number,
-    author: { type: mongoose.Schema.OjectId, ref: "User" },
+    longitude: Number,
+    author: { type: mongoose.Schema.ObjectId, ref: "User" },
     comment: [{
         text: String,
         createAt: { type: Date, default: Date.now },
-        author: { type: mongoose.Schema.OjectId, ref: "User" },
+        author: { type: mongoose.Schema.ObjectId, ref: "User" },
     }]
 }, { timestamps: true });
+
 
 
 
