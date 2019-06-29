@@ -29,6 +29,7 @@ const server = new ApolloServer({
             }
         } catch (e) {
             console.error(`unable to authenticate user with token ${authToken}`)
+            throw Error(`unable to authenticate user with token ${authToken}`);
         }
         return { currentUser };
     }
