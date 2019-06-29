@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import axios from 'axios';
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -18,12 +19,32 @@ const CreatePin = ({ classes }) => {
     setTitle("")
     setImage("")
     setContent("")
-    dispatch({type:"DELETE_DRAFT"});
+    dispatch({ type: "DELETE_DRAFT" });
   }
 
-  const handleSubmit = event => {
+  const handleImageUpload = async () => {
+    let res;
+    try {
+      const data = new FormData();
+      data.append("file", image);
+      data.append("upload_preset", "google_pin_map");
+      data.append("cloud_name", "zafiron");
+
+      console.log(data)
+      res = await axios.post("https://api.cloudinary.com/v1_1/zafiron/image/upload",
+        data)
+      console.log(res)
+      return res.data.url || null;
+    } catch (e) {
+      console.log("horror")
+      console.error(e);
+    }
+  }
+
+  const handleSubmit = async event => {
     event.preventDefault()
-    console.log({ title, image, content })
+    const url = await handleImageUpload();
+    console.log({ title, image, content, url })
   }
   return (
     <form className={classes.form}>
