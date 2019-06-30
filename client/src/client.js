@@ -1,7 +1,9 @@
 import { GraphQLClient } from 'graphql-request';
 import { useState, useEffect } from 'react'
 
-export const BASE_URL = process.env.NODE_ENV === "production" ? "https://graphql-react-map-realtime.herokuapp.com" : `http://${process.env.REACT_APP_GRAPHQL_URL}`
+// export const BASE_URL = process.env.NODE_ENV === "production" ? "https://graphql-react-map-realtime.herokuapp.com" : `http://${process.env.REACT_APP_GRAPHQL_URL}`
+
+export const BASE_URL =`http://${process.env.REACT_APP_GRAPHQL_URL}`
 
 console.log(BASE_URL)
 export const useClient = () => {

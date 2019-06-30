@@ -191,6 +191,7 @@ const Map = ({ classes }) => {
         subscription={PIN_ADDED_SUBSCRIPTION}
         onSubscriptionData={({ subscriptionData }) => {
           const { pinAdded } = subscriptionData.data
+          console.log("LANZANDO SUBSCRIPCION CREATE PIN")
           dispatch({ type: "CREATE_PIN", payload: pinAdded })
         }}
       />
@@ -205,6 +206,7 @@ const Map = ({ classes }) => {
         subscription={PIN_DELETED_SUBSCRIPTION}
         onSubscriptionData={({ subscriptionData }) => {
           const { pinDeleted } = subscriptionData.data
+          console.log("LANZANDO DELETE")
           dispatch({ type: "DELETE_PIN", payload: pinDeleted })
         }}
       />

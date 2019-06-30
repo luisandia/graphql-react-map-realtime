@@ -3,9 +3,9 @@ const Pin = require('./models/Pin')
 const User = require('./models/User')
 
 const pubSub = new PubSub();
-const PIN_ADDED = "PIN_ADDED"
-const PIN_DELETED = "PIN_DELETED"
-const PIN_UPDATED = "PIN_UPDATED"
+const CREATE_PIN = "CREATE_PIN"
+const DELETE_PIN = "DELETE_PIN"
+const CREATE_COMMENT = "CREATE_COMMENT"
 
 const authenticated = next => (root, args, ctx, info) => {
     if (!ctx.currentUser) {
@@ -34,7 +34,7 @@ module.exports = {
                 author: ctx.currentUser._id
             }).save();
             const pinAdded = await Pin.populate(newPin, 'author')
-            pubSub.publish(PIN_ADDED, { pinAdded });
+            pubSub.publish(CREATE_PIN, { pinAdded });
             return pinAdded;
         },
         deletePin: authenticated(async (root, args, ctx) => {
@@ -42,7 +42,7 @@ module.exports = {
             const { pinId } = args
             const pinDeleted = await Pin.findOneAndDelete({ _id: pinId }).exec()
             console.log(pinDeleted)
-            pubSub.publish(PIN_DELETED, { pinDeleted });
+            pubSub.publish(DELETE_PIN, { pinDeleted });
             return pinDeleted;
         }),
         createComment: authenticated(async (root, args, ctx) => {
@@ -53,19 +53,19 @@ module.exports = {
                 },
                 { new: true }
             ).populate('author').populate('comments.author');
-            pubSub.publish(PIN_UPDATED, { pinUpdated });
+            pubSub.publish(CREATE_COMMENT, { pinUpdated });
             return pinUpdated;
         })
     },
     Subscription: {
         pinAdded: {
-            subscribe: () => pubSub.asyncIterator(PIN_ADDED)
+            subscribe: () => pubSub.asyncIterator(CREATE_PIN)
         },
         pinDeleted: {
-            subscribe: () => pubSub.asyncIterator(PIN_DELETED)
+            subscribe: () => pubSub.asyncIterator(DELETE_PIN)
         },
         pinUpdated: {
-            subscribe: () => pubSub.asyncIterator(PIN_UPDATED)
+            subscribe: () => pubSub.asyncIterator(CREATE_COMMENT)
         }
 
     }

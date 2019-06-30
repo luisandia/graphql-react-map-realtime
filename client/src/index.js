@@ -16,7 +16,8 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
 console.log(process.env)
-export const BASE_URL = process.env.NODE_ENV === "production" ? "ws://graphql-react-map-realtime.herokuapp.com" : `ws://${process.env.REACT_APP_GRAPHQL_URL}`
+// export const BASE_URL = process.env.NODE_ENV === "production" ? "ws://graphql-react-map-realtime.herokuapp.com" : `ws://${process.env.REACT_APP_GRAPHQL_URL}`
+export const BASE_URL = `ws://${process.env.REACT_APP_GRAPHQL_URL}`
 
 const wsLink = new WebSocketLink({
   uri: BASE_URL,
