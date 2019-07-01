@@ -54,12 +54,6 @@ app.get('*', (req, res) => {
 });
 }
 
-// app.listen(process.env.PORT || 4000).then(({ url }) => {
-//     console.log(`Apollo server listen: ${url}`);
-// });
-// app.listen({ port: 4000 }, () =>
-//   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-// );
 const PORT = process.env.PORT || 4000;
 
 httpServer.listen(PORT, () => {
