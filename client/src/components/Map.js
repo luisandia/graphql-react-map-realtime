@@ -106,6 +106,7 @@ const Map = ({ classes }) => {
 
         onClick={handleMapClick}
         {...viewport}
+        onViewportChange={setViewport}
       >
         {/* navigation control */}
         <div className={classes.navigationControl}>
